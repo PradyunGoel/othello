@@ -117,6 +117,8 @@ def checkdiscs(board, pos, col):
 def legalmove(board, pos, col):
     x = pos[0]
     y = pos[1]
+    if x<0 or x>8 or y<0 or y>8:
+        return False
     if board[x][y] != 0:
         return False
     lisdisc, numdisc = checkdiscs(board, pos, col)
@@ -140,20 +142,60 @@ def nomove(board):
 
 def makmo(pos, col):
     global board
-    lisa = checkdiscs(board, pos, col)
+    lisa, num = checkdiscs(board, pos, col)
+    lisa.append(pos)
     for disc in lisa:
         print(disc)
         board[disc[0]][disc[1]] = col
 
+def ctdisks(board):
+    wdi = bdi = 0
+    for row in board:
+        for col in row:
+            if col == 1:
+                wdi += 1
+            if col == 2:
+                bdi += 1
+
+    return wdi, bdi
+
 board = initialize()
-col = 1
-while(not nomove(board)):
-    x = int(input())
-    y = int(input())
-    pos = [x,y]
-    if not legalmove(board, pos, col):
-        print("Illegal")
+col = 2
+'''while(not nomove(board)):
+
+    #co-ordinates throughout are 0-indexed
+    if posmove(board, col) == []:
+        print("You must pass! No legal moves")
+        col = 3-col
+        continue
+        #To tell the user they pass, opponent's turn again
+
+    pos = [-1, -1]
+
+    print(posmove(board, col), "is the list of possible moves for col =",col)
+    
+    while not legalmove(board, pos, col):
+        x = int(input())
+        y = int(input())
+        pos = [x,y]
+        #waits till some correct possible co-ordinates picked
+
+    flipdisc, numdisc = checkdiscs(board, pos, col)
+    
     makmo(pos, col)
-    col = 1-col
+    col = 3-col
+    #print(board) #printing the board
 
+    #things returned each turn:
+        #Does player need to pass?
+        #List of possible moves
+        #Board holds the new correct board position
+        #flipdisc holds the list of disc positions that need to get flipped [This does not include the played spot]
+        #numdisc holds the number of discs that need to be flipped
+        
 
+#game has finished, neither side has legal move
+wdi, bdi = ctdisks(board)
+print("White has", wdi, "disks")
+print("Black has", bdi, "disks")
+'''
