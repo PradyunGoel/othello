@@ -20,13 +20,12 @@ pygame.mixer.init()
 
 #setting up the board
 board_surf = pygame.display.set_mode((SURF_B, SURF_H)) 
-board_pic = pygame.image.load('board.jpg') # TODO: loaf and scale can be refactored into a function.
+board_pic = pygame.image.load("board.jpg") # TODO: loaf and scale can be refactored into a function.
 board_pic = pygame.transform.scale(board_pic, (BOARD_B, BOARD_H))
 cells = pygame.image.load("grid.png")
 cells = pygame.transform.scale(cells, (BOARD_B, BOARD_H))
 menu_button = pygame.image.load("menu_button.png")
 menu_button = pygame.transform.scale(menu_button, (BOARD_B//16, BOARD_H//16))
-pygame.display.update()
 
 #setting size of each cell
 cell_b = BOARD_B//8
@@ -37,6 +36,10 @@ wh_counter = pygame.image.load('white_piece.png')
 wh_counter = pygame.transform.scale(wh_counter, (cell_b, cell_h))
 bl_counter = pygame.image.load('black_piece.png')
 bl_counter = pygame.transform.scale(bl_counter, (cell_b, cell_h))
+
+#setting up the legal move indicator
+pos_move = pygame.image.load("pos_frame.png")
+pos_move = pygame.transform.scale(pos_move, (cell_b, cell_h))
 
 #colours
 black = (0, 0, 0)
@@ -169,8 +172,8 @@ def show_score():
     pygame.draw.rect(board_surf, text_col, (640, 0, 160, 640), 5)
     pygame.draw.rect(board_surf, text_col, (660, 20+7*cell_h, num_done*120//64, cell_h//4))
     pygame.draw.rect(board_surf, text_col, (660, 20+7*cell_h, 120, cell_h//4), 1)
-    board_surf.blit(wh_score, (660, 20+cell_h))
-    board_surf.blit(bl_score, (660, 20+3*cell_h))
+    board_surf.blit(wh_score, (660, cell_h+20))
+    board_surf.blit(bl_score, (660, 3*cell_h+20))
     board_surf.blit(progress, (660, 7*cell_h))
     #board.blit(playing, (660, 20+4*cell_h))
     board_surf.blit(menu_button, (660, 50+5*cell_h))
@@ -180,6 +183,8 @@ def show_score():
         pygame.draw.ellipse(board_surf, wh_ring, (660+4, 10+2, cell_b-6, cell_h-6), 8) #magenta, 
     else:
         pygame.draw.ellipse(board_surf, bl_ring, (660+1, 10+2*cell_h+1, cell_b-5, cell_h-5), 8)
+    #board_surf.blit(wh_score, (10+660+cell_b//3, cell_h//2))
+    #board_surf.blit(bl_score, (10+660+cell_b//3, 2*cell_h+cell_h//2))
 
 
 #function to check if the board is full
@@ -212,6 +217,13 @@ def reset():
     pygame.display.update()
 
 
+#function to show the possible moves
+def show_legal(pos_moves):
+    for move in pos_moves:
+        board_surf.blit(pos_move, (move[0]*cell_b, move[1]*cell_h))
+    pygame.display.update()
+
+
 #setting the theme to default(temporary)
 u_theme = input("Enter the theme: ")
 set_theme(u_theme)
@@ -225,10 +237,15 @@ while True:
     if posmove(board, col) == []:
         print("You must pass! No legal moves")
         col = 3-col
+        show_score()
+        pygame.display.update()
+        continue
+    else:
+        show_legal(posmove(board, col))
 
     pos = [-1, -1]
 
-    print(posmove(board, col), "is the list of possible moves for col =",col)
+    #print(posmove(board, col), "is the list of possible moves for col =",col)
 
     while not legalmove(board, pos, col):
         for event in pygame.event.get():
@@ -258,6 +275,8 @@ while True:
         bl_score += row.count(BLACK)
     score = [wh_score, bl_score]
 
+    show_score()
+
     if nomove(board):
         if score[WHITE-1] > score[BLACK-1]:
             print("White wins!")
@@ -266,7 +285,11 @@ while True:
         else:
             print("Well played! It's a draw.")
         print("MENU")
+        break
 
+    #reset()
+    pygame.display.update()
+    
     '''for event in pygame.event.get():
         #later add condition to check for mouseclick only once the menu has been closed
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -298,10 +321,7 @@ while True:
             print("Well played! It's a draw.")
         print("MENU")
         #reset()
-    '''
-    show_score()
-    #reset()
-    pygame.display.update() 
+    ''' 
 
 board_surf.blit(board_pic, (0, 0))
 board_surf.blit(cells, (0, 0))

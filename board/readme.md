@@ -17,4 +17,3 @@ add a noise/notification for illegal move attempt
 put the score inside the circle
 write othello somewhere
 add winner message
-
