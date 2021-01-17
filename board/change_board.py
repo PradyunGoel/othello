@@ -6,6 +6,7 @@ def initialize():
     #print("initialize")
     return board
 
+
 def checkdiscs(board, pos, col):
     #N, S, E, W, NE, NW, SE, SW = -1
     x = pos[0]
@@ -115,6 +116,7 @@ def checkdiscs(board, pos, col):
         
     return lisdisc,numdisc
 
+
 def legalmove(board, pos, col):
     x = pos[0]
     y = pos[1]
@@ -127,6 +129,7 @@ def legalmove(board, pos, col):
         return False
     return True
 
+
 def posmove(board, col):
     lisa = []
     for i in range(8):
@@ -135,19 +138,22 @@ def posmove(board, col):
                 lisa.append([i,j])
     return lisa
 
+
 def nomove(board):
     if posmove(board, 1) == [] and posmove(board, 2) == []:
         return True
     else:
         return False
 
-def makmo(pos, col):
-    global board
+
+def makmo(board, pos, col):
+    #global board
     lisa, num = checkdiscs(board, pos, col)
     lisa.append(pos)
     for disc in lisa:
         #print(disc)
         board[disc[0]][disc[1]] = col
+
 
 def ctdisks(board):
     wdi = bdi = 0
@@ -160,8 +166,11 @@ def ctdisks(board):
 
     return wdi, bdi
 
-board = initialize()
-col = 2
+
+#board = initialize()
+#col = 2
+#board = initialize()
+#col = 2
 '''while(not nomove(board)):
 
     #co-ordinates throughout are 0-indexed
