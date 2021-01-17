@@ -1,8 +1,9 @@
 def initialize():
-    #0 for no disk, 1 for red, 2 for black
+    #0 for no disk, 1 for white, 2 for black
     board = [[0 for i in range(8)] for j in range(8)]
     board[4][4] = board[3][3] = 1
     board[4][3] = board[3][4] = 2
+    #print("initialize")
     return board
 
 def checkdiscs(board, pos, col):
@@ -145,7 +146,7 @@ def makmo(pos, col):
     lisa, num = checkdiscs(board, pos, col)
     lisa.append(pos)
     for disc in lisa:
-        print(disc)
+        #print(disc)
         board[disc[0]][disc[1]] = col
 
 def ctdisks(board):
