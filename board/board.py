@@ -90,6 +90,8 @@ start_heading = load_image('othello_heading.jpg', SURF_B, SURF_H//7)
 wh_counter = load_image('white_piece.png', CELL_B, CELL_H)
 bl_counter = load_image('black_piece.png', CELL_B, CELL_H)
 pos_move = load_image('pos_frame.png', CELL_B, CELL_H)
+pos_move_white = load_image('col1.png', CELL_B, CELL_H)
+pos_move_black = load_image('col2.png', CELL_B, CELL_H)
 
 #tracking3 the player currently playing(0-white, 1-black)
 turn = 0 # TODO: BLACK/WHITE
@@ -225,8 +227,12 @@ def show_menu():
 
 #function to show the possible moves
 def show_legal(pos_moves):
-    for move in pos_moves:
-        board_surf.blit(pos_move, (move[0]*CELL_B, move[1]*CELL_H))
+    if col == 1:
+        for move in pos_moves:
+            board_surf.blit(pos_move_white, (move[0]*CELL_B, move[1]*CELL_H))
+    elif col == 2:
+        for move in pos_moves:
+            board_surf.blit(pos_move_black, (move[0]*CELL_B, move[1]*CELL_H))
     pygame.display.update()
 
 
