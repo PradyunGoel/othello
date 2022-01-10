@@ -299,7 +299,7 @@ while True:
     flipdisc, numdisc = checkdiscs(board, pos, col)
 
     makmo(board, pos, col)
-    col = 3-col
+    col=3-col
 
     fill_board()
 
