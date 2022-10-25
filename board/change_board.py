@@ -164,7 +164,7 @@ def ctdisks(board):
             if col == 2:
                 bdi += 1
 
-    return wdi,bdi
+    return wdi, bdi
 
 
 #board = initialize()
